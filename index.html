@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0d10" />
+  <meta name="description" content="Разработка калькуляций для МГЭ в Москве: расчёт стоимости, структура затрат, подтверждение цен и пояснения. Подготовка и корректировка расчётных материалов для Московской государственной экспертизы." />
+  <title>Калькуляции для МГЭ в Москве — разработка и обоснование стоимости | MozBee</title>
+
+  <style>
+    :root{
+      --bg:#0b0d10;
+      --bg-soft:#101319;
+      --panel:#141820;
+      --panel-2:#181d26;
+      --text:#f5f7fb;
+      --muted:#9aa4b2;
+      --line:rgba(255,255,255,.09);
+      --accent:#4f8cff;
+      --accent-2:#79aaff;
+      --shadow:0 24px 80px rgba(0,0,0,.35);
+      --radius:24px;
+      --radius-sm:16px;
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(79,140,255,.08), transparent 28%),
+        radial-gradient(circle at 85% 0%, rgba(79,140,255,.05), transparent 22%),
+        var(--bg);
+      color:var(--text);
+      font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button,input,textarea,select{font:inherit}
+    img,svg{max-width:100%}
+
+    .wrap{width:min(calc(100% - 40px), var(--max));margin:0 auto}
+
+    .grid-bg{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-2;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size:48px 48px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.6), transparent 88%);
+    }
+
+    .noise{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      opacity:.055;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(18px);
+      background:rgba(11,13,16,.74);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+
+    .brand-mark{
+      width:36px;height:36px;
+      display:grid;place-items:center;
+      border:1px solid rgba(79,140,255,.55);
+      border-radius:11px;
+      color:var(--accent);
+      background:rgba(79,140,255,.06);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+
+    .brand small{
+      display:block;
+      color:var(--muted);
+      font-weight:500;
+      font-size:11px;
+      letter-spacing:.11em;
+      text-transform:uppercase;
+      margin-top:2px;
+    }
+
+    .menu{display:flex;align-items:center;gap:26px;color:#c9d0da;font-size:14px}
+    .menu a{transition:.2s ease}
+    .menu a:hover{color:#fff}
+
+    .nav-cta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .btn{
+      border:0;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:46px;
+      padding:0 18px;
+      border-radius:14px;
+      font-weight:700;
+      transition:.22s ease;
+      white-space:nowrap;
+    }
+
+    .btn-primary{
+      background:var(--accent);
+      color:#16120d;
+      box-shadow:0 12px 34px rgba(79,140,255,.2);
+    }
+    .btn-primary:hover{transform:translateY(-2px);background:var(--accent-2)}
+    .btn-secondary{
+      color:#edf1f7;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.035);
+    }
+    .btn-secondary:hover{border-color:rgba(79,140,255,.4);background:rgba(79,140,255,.05)}
+
+    .hero{
+      min-height:calc(100vh - 76px);
+      display:grid;
+      align-items:center;
+      padding:80px 0 60px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:56px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border:1px solid rgba(79,140,255,.24);
+      border-radius:999px;
+      background:rgba(79,140,255,.055);
+      color:#e4c28e;
+      font-size:13px;
+      margin-bottom:24px;
+    }
+    .eyebrow i{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 18px rgba(79,140,255,.65);
+    }
+
+    h1{
+      margin:0;
+      max-width:850px;
+      font-size:clamp(44px,7vw,86px);
+      line-height:.96;
+      letter-spacing:-.055em;
+    }
+    h1 span{color:var(--accent)}
+    .lead{
+      max-width:720px;
+      margin:28px 0 0;
+      color:#b4bdc9;
+      font-size:clamp(18px,2vw,22px);
+      line-height:1.55;
+    }
+
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+    .trust-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 22px;
+      margin-top:32px;
+      color:#8f99a6;
+      font-size:13px;
+    }
+    .trust-row span{display:flex;align-items:center;gap:8px}
+    .trust-row svg{color:var(--accent)}
+
+    .visual{
+      position:relative;
+      min-height:520px;
+      display:grid;
+      place-items:center;
+    }
+
+    .orb{
+      position:absolute;
+      width:390px;height:390px;
+      border:1px solid rgba(79,140,255,.2);
+      border-radius:50%;
+      animation:spin 22s linear infinite;
+    }
+    .orb:before,.orb:after{
+      content:"";
+      position:absolute;
+      inset:42px;
+      border:1px dashed rgba(255,255,255,.08);
+      border-radius:50%;
+    }
+    .orb:after{inset:105px;border-style:solid;border-color:rgba(79,140,255,.12)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .calc-card{
+      width:min(100%,440px);
+      position:relative;
+      z-index:2;
+      border:1px solid rgba(255,255,255,.11);
+      border-radius:28px;
+      padding:26px;
+      background:linear-gradient(160deg, rgba(26,31,40,.96), rgba(14,17,22,.96));
+      box-shadow:var(--shadow);
+      transform:rotate(-2deg);
+    }
+    .calc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+    .calc-title{font-size:15px;color:#d9dfe7}
+    .tag{
+      color:#e6c38e;
+      background:rgba(79,140,255,.09);
+      border:1px solid rgba(79,140,255,.2);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:11px;
+    }
+    .calc-lines{display:grid;gap:12px;margin-top:24px}
+    .calc-line{
+      height:44px;border-radius:12px;border:1px solid var(--line);
+      display:grid;grid-template-columns:1fr 110px;gap:12px;align-items:center;padding:0 12px;
+      background:rgba(255,255,255,.025);
+    }
+    .calc-line div:first-child{height:8px;border-radius:10px;background:rgba(255,255,255,.10)}
+    .calc-line div:last-child{height:8px;border-radius:10px;background:rgba(79,140,255,.28)}
+    .calc-total{
+      margin-top:18px;
+      display:flex;justify-content:space-between;align-items:center;
+      padding-top:18px;border-top:1px solid var(--line);
+    }
+    .calc-total strong{font-size:24px;color:#f5e2c1}
+    .badge-float{
+      position:absolute;right:-22px;bottom:36px;
+      background:#11151b;border:1px solid var(--line);
+      border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);
+      font-size:12px;color:#aab4c0;
+    }
+    .badge-float b{display:block;color:#fff;margin-bottom:3px}
+
+    section{padding:96px 0}
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:30px;
+      margin-bottom:38px;
+    }
+    .kicker{
+      color:var(--accent);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:12px;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+    h2{
+      margin:0;
+      font-size:clamp(34px,5vw,58px);
+      line-height:1.02;
+      letter-spacing:-.045em;
+    }
+    .section-note{max-width:520px;color:var(--muted);font-size:16px}
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.018));
+      padding:26px;
+      min-height:250px;
+      position:relative;
+      overflow:hidden;
+      transition:.25s ease;
+    }
+    .card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(79,140,255,.26);
+      background:linear-gradient(180deg, rgba(79,140,255,.05), rgba(255,255,255,.018));
+    }
+    .num{color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.08em}
+    .card h3{font-size:22px;margin:46px 0 10px;letter-spacing:-.02em}
+    .card p{margin:0;color:var(--muted)}
+    .card .corner{
+      position:absolute;top:0;right:0;width:76px;height:76px;
+      border-left:1px solid var(--line);border-bottom:1px solid var(--line);
+      border-bottom-left-radius:24px;
+      display:grid;place-items:center;color:rgba(79,140,255,.65);
+    }
+
+    .steps{
+      border-top:1px solid var(--line);
+    }
+    .step{
+      display:grid;
+      grid-template-columns:120px 1fr 1fr;
+      gap:30px;
+      padding:28px 0;
+      border-bottom:1px solid var(--line);
+      align-items:start;
+    }
+    .step-index{color:var(--accent);font-size:13px;font-weight:800}
+    .step h3{margin:0;font-size:24px}
+    .step p{margin:0;color:var(--muted)}
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+    .result-box{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px;
+      background:rgba(255,255,255,.025);
+    }
+    .result-box h3{font-size:24px;margin:0 0 18px}
+    .checklist{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+    .checklist li{
+      display:flex;gap:12px;align-items:flex-start;color:#c5ccd5
+    }
+    .check{
+      flex:0 0 22px;height:22px;border-radius:7px;
+      display:grid;place-items:center;
+      background:rgba(79,140,255,.11);
+      color:var(--accent);
+      border:1px solid rgba(79,140,255,.22);
+      margin-top:1px;
+    }
+
+    .cta-band{
+      padding:0;
+    }
+    .cta-shell{
+      border:1px solid rgba(79,140,255,.22);
+      border-radius:32px;
+      padding:clamp(28px,6vw,64px);
+      background:
+        radial-gradient(circle at 85% 25%, rgba(79,140,255,.12), transparent 26%),
+        linear-gradient(140deg,#12161d,#0f1217);
+      box-shadow:var(--shadow);
+    }
+    .cta-grid{
+      display:grid;
+      grid-template-columns:1fr .9fr;
+      gap:56px;
+      align-items:start;
+    }
+    .cta-shell h2{max-width:680px}
+    .cta-shell p{color:var(--muted);max-width:620px;font-size:17px}
+    details{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.02);
+      padding:0 18px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      padding:19px 34px 19px 0;
+      position:relative;
+      font-weight:700;
+    }
+    summary::-webkit-details-marker{display:none}
+    summary:after{
+      content:"+";
+      position:absolute;
+      right:0;top:15px;
+      color:var(--accent);
+      font-size:24px;
+      font-weight:400;
+    }
+    details[open] summary:after{content:"–"}
+    details p{color:var(--muted);margin:0 0 18px}
+
+    footer{
+      padding:36px 0 44px;
+      border-top:1px solid var(--line);
+      color:#7e8997;
+      font-size:13px;
+    }
+    .footer-grid{
+      display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap;
+    }
+    .footer-links{display:flex;gap:18px;flex-wrap:wrap}
+    .footer-links a:hover{color:#fff}
+
+    .mobile-toggle{
+      display:none;
+      width:44px;height:44px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:white;
+      cursor:pointer;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;bottom:24px;
+      transform:translate(-50%,20px);
+      opacity:0;
+      pointer-events:none;
+      z-index:100;
+      background:#151a22;
+      color:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 16px;
+      box-shadow:var(--shadow);
+      transition:.25s ease;
+      font-size:13px;
+    }
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+
+    .reveal{
+      opacity:0;
+      transform:translateY(22px);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+    .reveal.on{opacity:1;transform:none}
+
+    @media (max-width: 940px){
+      .menu{
+        position:absolute;
+        left:20px;right:20px;top:86px;
+        display:none;
+        flex-direction:column;
+        align-items:stretch;
+        padding:18px;
+        background:#10141a;
+        border:1px solid var(--line);
+        border-radius:18px;
+        box-shadow:var(--shadow);
+      }
+      .menu.open{display:flex}
+      .mobile-toggle{display:block}
+      .nav-cta .btn{display:none}
+      .hero{padding-top:58px}
+      .hero-grid,.cta-grid,.result-grid{grid-template-columns:1fr}
+      .visual{min-height:440px}
+      .cards{grid-template-columns:1fr}
+      .step{grid-template-columns:70px 1fr}
+      .step p{grid-column:2}
+      .section-head{display:block}
+      .section-note{margin-top:18px}
+    }
+
+    @media (max-width: 620px){
+      .wrap{width:min(calc(100% - 28px), var(--max))}
+      .nav{height:68px}
+      .hero{min-height:auto;padding:56px 0 36px}
+      h1{font-size:clamp(42px,13vw,62px)}
+      .lead{font-size:18px}
+      .hero-actions{display:grid}
+      .hero-actions .btn{width:100%}
+      .visual{min-height:360px}
+      .orb{width:280px;height:280px}
+      .calc-card{padding:20px}
+      .badge-float{right:-6px;bottom:18px}
+      section{padding:72px 0}
+      .step{grid-template-columns:50px 1fr;gap:16px}
+      .cta-shell{border-radius:24px}
+    }
+  </style>
+
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="keywords" content="калькуляции для МГЭ, разработка калькуляций МГЭ, калькуляция для Московской государственной экспертизы, расчёт стоимости, калькуляция стоимости, обоснование стоимости, расчеты для экспертизы" />
+  <meta name="author" content="MozBee" />
+  <meta name="language" content="ru" />
+  <meta name="geo.region" content="RU-MOW" />
+  <meta name="geo.placename" content="Москва" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:title" content="Калькуляции для МГЭ — Московская государственная экспертиза" />
+  <meta property="og:description" content="Разработка и корректировка калькуляций стоимости для Московской государственной экспертизы. Структурированные расчёты, исходные данные и подтверждающие материалы." />
+  <meta property="og:site_name" content="MozBee — Калькуляции для МГЭ" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Калькуляции для МГЭ — MozBee" />
+  <meta name="twitter:description" content="Разработка калькуляций и расчётов стоимости для Московской государственной экспертизы." />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d10'/%3E%3Cpath d='M16 46V18h8l8 12 8-12h8v28h-8V31l-8 11-8-11v15z' fill='%234f8cff'/%3E%3C/svg%3E" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "#organization",
+        "name": "MozBee",
+        "url": "",
+        "email": "mailto:mozbee13@gmail.com",
+        "sameAs": ["https://t.me/MGE_Calculator_Bot"],
+        "areaServed": {
+          "@type": "City",
+          "name": "Москва"
+        },
+        "description": "Разработка и корректировка калькуляций стоимости для Московской государственной экспертизы.",
+        "knowsAbout": [
+          "калькуляции для МГЭ",
+          "расчёты стоимости",
+          "обоснование стоимости",
+          "расчётные материалы для экспертизы"
+        ]
+      },
+      {
+        "@type": "Service",
+        "name": "Разработка калькуляций для МГЭ",
+        "serviceType": "Разработка калькуляций стоимости",
+        "provider": {"@id": "#organization"},
+        "areaServed": {"@type": "City", "name": "Москва"},
+        "description": "Подготовка, проверка и корректировка калькуляций стоимости с исходными и подтверждающими материалами."
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Какие исходные данные нужны для разработки калькуляции для МГЭ?",
+            "acceptedAnswer": {"@type":"Answer","text":"Наименование позиции, единица измерения, объём, техническое описание, чертежи или спецификации при наличии, а также имеющиеся коммерческие предложения и прайс-листы."}
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли доработать существующую калькуляцию?",
+            "acceptedAnswer": {"@type":"Answer","text":"Да. Можно передать существующий файл, замечания и исходные документы для анализа и корректировки расчёта."}
+          },
+          {
+            "@type": "Question",
+            "name": "В каком формате передаётся результат?",
+            "acceptedAnswer": {"@type":"Answer","text":"Расчётная часть обычно передаётся в Excel, а подтверждающие и пояснительные материалы — в исходном формате или PDF."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+</head>
+
+<body>
+  <div class="grid-bg"></div>
+  <div class="noise"></div>
+
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#top" aria-label="На главную">
+        <span class="brand-mark">К</span>
+        <span>Калькуляции <small>для МГЭ</small></span>
+      </a>
+
+      <nav class="menu" id="menu">
+        <a href="#services">Услуги</a>
+        <a href="#process">Как работаем</a>
+        <a href="#result">Что получите</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a class="btn btn-primary" href="#contact">Оставить заявку</a>
+        <button class="mobile-toggle" id="menuToggle" aria-label="Открыть меню">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <div class="eyebrow"><i></i> Калькуляции для Московской государственной экспертизы</div>
+          <h1>Разработка калькуляций для <span>МГЭ</span></h1>
+          <p style="margin:14px 0 0;color:#7f8a99;font-size:14px;letter-spacing:.01em">МГЭ — Московская государственная экспертиза</p>
+          <p class="lead">
+            Разрабатываем структурированные калькуляции стоимости для Московской государственной экспертизы с понятной логикой расчёта,
+            подтверждающими материалами и комплектом исходных данных для дальнейшей проверки.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact">Рассчитать стоимость</a>
+            <a class="btn btn-secondary" href="#process">Посмотреть порядок работы</a>
+          </div>
+          <div class="trust-row">
+            <span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Проверяем логику расчёта
+            </span>
+            <span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Структурируем подтверждающие документы
+            </span>
+            <span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Работаем по исходным данным заказчика
+            </span>
+          </div>
+        </div>
+
+        <div class="visual reveal" aria-hidden="true">
+          <div class="orb"></div>
+          <div class="calc-card">
+            <div class="calc-head">
+              <div>
+                <div class="calc-title">Расчёт стоимости</div>
+                <div style="font-size:12px;color:#7f8996;margin-top:4px">Структурированная калькуляция</div>
+              </div>
+              <div class="tag">МГЭ</div>
+            </div>
+            <div class="calc-lines">
+              <div class="calc-line"><div></div><div></div></div>
+              <div class="calc-line"><div style="width:78%"></div><div style="width:84%"></div></div>
+              <div class="calc-line"><div style="width:92%"></div><div style="width:74%"></div></div>
+              <div class="calc-line"><div style="width:68%"></div><div style="width:94%"></div></div>
+            </div>
+            <div class="calc-total">
+              <span style="color:#8e98a5">Итого</span>
+              <strong>обосновано</strong>
+            </div>
+            <div class="badge-float">
+              <b>Комплектность</b>
+              Расчёт + источники + пояснения
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Услуги</div>
+            <h2>Разработка калькуляций<br>для Московской государственной экспертизы</h2>
+          </div>
+          <div class="section-note">
+            Не просто заполняем таблицу, а собираем связанный комплект, в котором каждая стоимость имеет понятное основание и прослеживаемый источник.
+          </div>
+        </div>
+
+        <div class="cards">
+          <article class="card reveal">
+            <div class="num">01</div>
+            <div class="corner">↗</div>
+            <h3>Разработка калькуляции</h3>
+            <p>Формируем состав затрат, структуру расчёта, единицы измерения, объёмы, стоимость ресурсов и итоговую стоимость позиции.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="num">02</div>
+            <div class="corner">↗</div>
+            <h3>Подтверждение цен</h3>
+            <p>Систематизируем коммерческие предложения, прайс-листы и иные подтверждающие материалы по исходным данным проекта.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="num">03</div>
+            <div class="corner">↗</div>
+            <h3>Проверка исходных данных</h3>
+            <p>Выявляем недостающие параметры до начала расчёта, чтобы снизить количество уточнений и переделок на следующих этапах.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="num">04</div>
+            <div class="corner">↗</div>
+            <h3>Расчёт трудозатрат</h3>
+            <p>При необходимости детализируем трудовые и машинные ресурсы, продолжительность операций и состав исполнителей.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="num">05</div>
+            <div class="corner">↗</div>
+            <h3>Пояснения к расчёту</h3>
+            <p>Добавляем краткие пояснения по методике, допущениям, структуре затрат и источникам стоимости.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="num">06</div>
+            <div class="corner">↗</div>
+            <h3>Корректировка комплекта</h3>
+            <p>Вносим изменения по замечаниям к составу и структуре расчётных материалов в пределах согласованного задания.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Процесс</div>
+            <h2>Как выполняется<br>разработка калькуляции</h2>
+          </div>
+          <div class="section-note">
+            Чем полнее исходные данные на старте, тем точнее можно зафиксировать состав работ и срок подготовки.
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step reveal">
+            <div class="step-index">01 / Вход</div>
+            <h3>Получаем исходные данные</h3>
+            <p>Ведомости, чертежи, спецификации, описание технологии, объёмы, требования к результату и имеющиеся подтверждающие документы.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-index">02 / Анализ</div>
+            <h3>Фиксируем структуру</h3>
+            <p>Определяем состав статей калькуляции, перечень недостающих данных и необходимый комплект подтверждений.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-index">03 / Расчёт</div>
+            <h3>Собираем калькуляцию</h3>
+            <p>Выполняем расчёты, увязываем объёмы, ресурсы, цены и итоговые значения, приводим материалы к единой структуре.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-index">04 / Выдача</div>
+            <h3>Передаём комплект</h3>
+            <p>Вы получаете готовую расчётную часть в согласованном формате с систематизированными исходными и подтверждающими материалами.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Результат</div>
+            <h2>Что входит в калькуляцию для МГЭ</h2>
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-box reveal">
+            <h3>Готовый расчётный комплект</h3>
+            <ul class="checklist">
+              <li><span class="check">✓</span><span>калькуляция по согласованной структуре;</span></li>
+              <li><span class="check">✓</span><span>состав ресурсов и исходных показателей;</span></li>
+              <li><span class="check">✓</span><span>подтверждающие материалы по стоимости;</span></li>
+              <li><span class="check">✓</span><span>пояснения к ключевым допущениям и методике расчёта;</span></li>
+              <li><span class="check">✓</span><span>единая логика и прослеживаемость данных внутри комплекта.</span></li>
+            </ul>
+          </div>
+
+          <div class="result-box reveal">
+            <h3>Подходит, когда</h3>
+            <ul class="checklist">
+              <li><span class="check">✓</span><span>нет готовой расчётной структуры по нестандартной позиции;</span></li>
+              <li><span class="check">✓</span><span>нужно обосновать состав стоимости;</span></li>
+              <li><span class="check">✓</span><span>исходные данные собраны из нескольких источников;</span></li>
+              <li><span class="check">✓</span><span>нужно быстро привести расчёты к единому формату;</span></li>
+              <li><span class="check">✓</span><span>требуется подготовить комплект для дальнейшей проверки специалистами.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band" id="contact">
+      <div class="wrap">
+        <div class="cta-shell reveal">
+          <div style="max-width:820px">
+            <div class="kicker">Контакты</div>
+            <h2>Обсудим задачу и состав исходных данных</h2>
+            <p>Напишите нам в Telegram или по электронной почте. Передайте краткое описание позиции, объекта или вида работ — определим состав расчёта и необходимые исходные данные.</p>
+            <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+              <a class="btn btn-primary" href="https://t.me/MGE_Calculator_Bot" target="_blank" rel="noopener">Telegram · @MGE_Calculator_Bot</a>
+              <a class="btn btn-secondary" href="mailto:mozbee13@gmail.com">mozbee13@gmail.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+<section aria-labelledby="seo-text" style="padding-top:40px;padding-bottom:40px">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="kicker">Экспертиза</div>
+        <h2 id="seo-text">Калькуляции стоимости для МГЭ</h2>
+      </div>
+      <div class="section-note">
+        Помогаем подготовить расчётную часть по отдельным видам работ, конструкциям, материалам и оборудованию.
+      </div>
+    </div>
+    <div class="result-box reveal">
+      <p style="margin:0;color:#aeb7c3;max-width:900px">
+        Разработка калькуляций для Московской государственной экспертизы включает определение состава затрат,
+        расчёт объёмов и ресурсов, подбор и систематизацию ценовых данных, подготовку подтверждающих материалов
+        и пояснений. Работаем как с новой калькуляцией, так и с корректировкой уже подготовленных расчётов.
+        Задача — сделать стоимость прозрачной, проверяемой и логично связанной с исходными техническими данными проекта.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">FAQ</div>
+            <h2>Частые вопросы</h2>
+          </div>
+        </div>
+
+        <div class="faq">
+          <details class="reveal">
+            <summary>Какие исходные данные нужны для начала?</summary>
+            <p>Минимально — наименование позиции, единица измерения, объём и описание технологии или состава работ. Чем больше исходной технической информации есть на старте, тем точнее можно определить структуру калькуляции.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>Можно ли доработать уже существующую калькуляцию?</summary>
+            <p>Да. Можно передать текущий файл, имеющиеся замечания и комплект исходных документов. Сначала фиксируется объём необходимых изменений, затем выполняется корректировка.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>В каком формате передаётся результат?</summary>
+            <p>Как правило, расчётная часть передаётся в Excel, а подтверждающие и пояснительные материалы — в исходных форматах либо в PDF. Конкретный состав лучше зафиксировать до начала работ.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>Вы гарантируете принятие расчёта экспертизой?</summary>
+            <p>Итоговое решение всегда принимает соответствующая экспертная организация. Наша задача — подготовить логичный, структурированный и подтверждённый расчётный комплект, который можно предметно проверять и дорабатывать по замечаниям.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div>© <span id="year"></span> Калькуляции для МГЭ</div>
+      <div class="footer-links">
+        <a href="#services">Услуги</a>
+        <a href="#process">Порядок работы</a>
+        <a href="#contact">Заявка</a>
+        <a href="https://t.me/MGE_Calculator_Bot" target="_blank" rel="noopener">Telegram · @MGE_Calculator_Bot</a>
+        <a href="mailto:mozbee13@gmail.com">mozbee13@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Скопировано</div>
+
+  <script>
+    const menu = document.getElementById('menu');
+    const menuToggle = document.getElementById('menuToggle');
+    const toast = document.getElementById('toast');
+
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('open');
+      menuToggle.textContent = menu.classList.contains('open') ? '×' : '☰';
+    });
+
+    document.querySelectorAll('.menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.remove('open');
+        menuToggle.textContent = '☰';
+      });
+    });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function showToast(message){
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    async function copyText(text, message='Скопировано'){
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast(message);
+        return true;
+      }catch(e){
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        showToast(message);
+        return true;
+      }
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('on');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.12});
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
