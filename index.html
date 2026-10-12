@@ -3,9 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Калькуляции для МГЭ в Москве — разработка и обоснование стоимости</title>
+  <meta name="description" content="Разработка калькуляций для МГЭ (Московской государственной экспертизы): расчёт стоимости, структура затрат, подтверждение цен, пояснения и корректировка по замечаниям." />
+  <link rel="canonical" href="https://mgecalc.help/" />
   <meta name="theme-color" content="#0b0d10" />
-  <meta name="description" content="Разработка калькуляций для МГЭ в Москве: расчёт стоимости, структура затрат, подтверждение цен и пояснения. Подготовка и корректировка расчётных материалов для Московской государственной экспертизы." />
-  <title>Калькуляции для МГЭ в Москве — разработка и обоснование стоимости | MozBee</title>
+  <script>document.documentElement.classList.add('js')</script>
+
+  <!-- Подтверждение прав в Яндекс.Вебмастере и Google Search Console: вставьте свои коды -->
+  <!-- <meta name="yandex-verification" content="КОД_ЯНДЕКС" /> -->
+  <!-- <meta name="google-site-verification" content="КОД_GOOGLE" /> -->
 
   <style>
     :root{
@@ -454,12 +460,19 @@
     }
     .toast.show{opacity:1;transform:translate(-50%,0)}
 
-    .reveal{
+    /* Контент скрывается только при работающем JS — без JS (и для роботов) он всегда виден */
+    .js .reveal{
       opacity:0;
       transform:translateY(22px);
       transition:opacity .7s ease, transform .7s ease;
     }
-    .reveal.on{opacity:1;transform:none}
+    .js .reveal.on{opacity:1;transform:none}
+
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      .orb{animation:none}
+      .js .reveal{opacity:1;transform:none;transition:none}
+    }
 
     @media (max-width: 940px){
       .menu{
@@ -506,20 +519,19 @@
   </style>
 
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-  <meta name="keywords" content="калькуляции для МГЭ, разработка калькуляций МГЭ, калькуляция для Московской государственной экспертизы, расчёт стоимости, калькуляция стоимости, обоснование стоимости, расчеты для экспертизы" />
-  <meta name="author" content="MozBee" />
-  <meta name="language" content="ru" />
+  <meta name="keywords" content="калькуляции для МГЭ, разработка калькуляций МГЭ, калькуляция для Московской государственной экспертизы, расчёт стоимости для экспертизы, калькуляция стоимости, обоснование стоимости, Мосгосэкспертиза" />
   <meta name="geo.region" content="RU-MOW" />
   <meta name="geo.placename" content="Москва" />
 
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mgecalc.help/" />
   <meta property="og:locale" content="ru_RU" />
   <meta property="og:title" content="Калькуляции для МГЭ — Московская государственная экспертиза" />
   <meta property="og:description" content="Разработка и корректировка калькуляций стоимости для Московской государственной экспертизы. Структурированные расчёты, исходные данные и подтверждающие материалы." />
-  <meta property="og:site_name" content="MozBee — Калькуляции для МГЭ" />
+  <meta property="og:site_name" content="Калькуляции для МГЭ" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Калькуляции для МГЭ — MozBee" />
+  <meta name="twitter:title" content="Калькуляции для МГЭ — Московская государственная экспертиза" />
   <meta name="twitter:description" content="Разработка калькуляций и расчётов стоимости для Московской государственной экспертизы." />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0d10'/%3E%3Cpath d='M16 46V18h8l8 12 8-12h8v28h-8V31l-8 11-8-11v15z' fill='%234f8cff'/%3E%3C/svg%3E" />
@@ -529,19 +541,48 @@
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        "@id": "https://mgecalc.help/#website",
+        "url": "https://mgecalc.help/",
+        "name": "Калькуляции для МГЭ",
+        "inLanguage": "ru-RU",
+        "publisher": {"@id": "https://mgecalc.help/#organization"}
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://mgecalc.help/#webpage",
+        "url": "https://mgecalc.help/",
+        "name": "Калькуляции для МГЭ в Москве — разработка и обоснование стоимости",
+        "description": "Разработка калькуляций для МГЭ (Московской государственной экспертизы): расчёт стоимости, структура затрат, подтверждение цен, пояснения и корректировка по замечаниям.",
+        "inLanguage": "ru-RU",
+        "isPartOf": {"@id": "https://mgecalc.help/#website"},
+        "about": {"@id": "https://mgecalc.help/#service"},
+        "mainEntity": {"@id": "https://mgecalc.help/#faq"}
+      },
+      {
         "@type": "ProfessionalService",
-        "@id": "#organization",
-        "name": "MozBee",
-        "url": "",
-        "email": "mailto:mozbee13@gmail.com",
+        "@id": "https://mgecalc.help/#organization",
+        "name": "Калькуляции для МГЭ",
+        "url": "https://mgecalc.help/",
+        "email": "mozbee13@gmail.com",
         "sameAs": ["https://t.me/MGE_Calculator_Bot"],
-        "areaServed": {
-          "@type": "City",
-          "name": "Москва"
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "mozbee13@gmail.com",
+          "url": "https://t.me/MGE_Calculator_Bot",
+          "availableLanguage": "ru"
         },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Москва",
+          "addressCountry": "RU"
+        },
+        "areaServed": {"@type": "City", "name": "Москва"},
         "description": "Разработка и корректировка калькуляций стоимости для Московской государственной экспертизы.",
         "knowsAbout": [
           "калькуляции для МГЭ",
+          "Московская государственная экспертиза",
           "расчёты стоимости",
           "обоснование стоимости",
           "расчётные материалы для экспертизы"
@@ -549,29 +590,48 @@
       },
       {
         "@type": "Service",
+        "@id": "https://mgecalc.help/#service",
         "name": "Разработка калькуляций для МГЭ",
         "serviceType": "Разработка калькуляций стоимости",
-        "provider": {"@id": "#organization"},
+        "provider": {"@id": "https://mgecalc.help/#organization"},
         "areaServed": {"@type": "City", "name": "Москва"},
-        "description": "Подготовка, проверка и корректировка калькуляций стоимости с исходными и подтверждающими материалами."
+        "description": "Подготовка, проверка и корректировка калькуляций стоимости с исходными и подтверждающими материалами.",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Услуги",
+          "itemListElement": [
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Разработка калькуляции"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Подтверждение цен"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Проверка исходных данных"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Расчёт трудозатрат"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Пояснения к расчёту"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Корректировка комплекта"}}
+          ]
+        }
       },
       {
         "@type": "FAQPage",
+        "@id": "https://mgecalc.help/#faq",
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "Какие исходные данные нужны для разработки калькуляции для МГЭ?",
-            "acceptedAnswer": {"@type":"Answer","text":"Наименование позиции, единица измерения, объём, техническое описание, чертежи или спецификации при наличии, а также имеющиеся коммерческие предложения и прайс-листы."}
+            "name": "Какие исходные данные нужны для начала?",
+            "acceptedAnswer": {"@type":"Answer","text":"Минимально — наименование позиции, единица измерения, объём и описание технологии или состава работ. Чем больше исходной технической информации есть на старте, тем точнее можно определить структуру калькуляции."}
           },
           {
             "@type": "Question",
-            "name": "Можно ли доработать существующую калькуляцию?",
-            "acceptedAnswer": {"@type":"Answer","text":"Да. Можно передать существующий файл, замечания и исходные документы для анализа и корректировки расчёта."}
+            "name": "Можно ли доработать уже существующую калькуляцию?",
+            "acceptedAnswer": {"@type":"Answer","text":"Да. Можно передать текущий файл, имеющиеся замечания и комплект исходных документов. Сначала фиксируется объём необходимых изменений, затем выполняется корректировка."}
           },
           {
             "@type": "Question",
             "name": "В каком формате передаётся результат?",
-            "acceptedAnswer": {"@type":"Answer","text":"Расчётная часть обычно передаётся в Excel, а подтверждающие и пояснительные материалы — в исходном формате или PDF."}
+            "acceptedAnswer": {"@type":"Answer","text":"Как правило, расчётная часть передаётся в Excel, а подтверждающие и пояснительные материалы — в исходных форматах либо в PDF. Конкретный состав лучше зафиксировать до начала работ."}
+          },
+          {
+            "@type": "Question",
+            "name": "Вы гарантируете принятие расчёта экспертизой?",
+            "acceptedAnswer": {"@type":"Answer","text":"Итоговое решение всегда принимает соответствующая экспертная организация. Наша задача — подготовить логичный, структурированный и подтверждённый расчётный комплект, который можно предметно проверять и дорабатывать по замечаниям."}
           }
         ]
       }
@@ -592,7 +652,7 @@
         <span>Калькуляции <small>для МГЭ</small></span>
       </a>
 
-      <nav class="menu" id="menu">
+      <nav class="menu" id="menu" aria-label="Основное меню">
         <a href="#services">Услуги</a>
         <a href="#process">Как работаем</a>
         <a href="#result">Что получите</a>
@@ -602,7 +662,7 @@
 
       <div class="nav-cta">
         <a class="btn btn-primary" href="#contact">Оставить заявку</a>
-        <button class="mobile-toggle" id="menuToggle" aria-label="Открыть меню">☰</button>
+        <button class="mobile-toggle" id="menuToggle" aria-label="Открыть меню" aria-controls="menu" aria-expanded="false">☰</button>
       </div>
     </div>
   </header>
@@ -832,6 +892,12 @@
         и пояснений. Работаем как с новой калькуляцией, так и с корректировкой уже подготовленных расчётов.
         Задача — сделать стоимость прозрачной, проверяемой и логично связанной с исходными техническими данными проекта.
       </p>
+      <p style="margin:16px 0 0;color:#aeb7c3;max-width:900px">
+        Готовим калькуляции для МГЭ (Мосгосэкспертизы) по позициям, для которых нет подходящих расценок в сметных
+        нормативах: нестандартные работы, материалы, конструкции и оборудование. Расчёт выполняется по исходным данным
+        заказчика с подбором коммерческих предложений и прайс-листов, а при получении замечаний экспертизы — дорабатывается
+        в рамках согласованного задания. Работаем с заказчиками из Москвы и других регионов дистанционно.
+      </p>
     </div>
   </div>
 </section>
@@ -891,14 +957,16 @@
     const toast = document.getElementById('toast');
 
     menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('open');
-      menuToggle.textContent = menu.classList.contains('open') ? '×' : '☰';
+      const open = menu.classList.toggle('open');
+      menuToggle.textContent = open ? '×' : '☰';
+      menuToggle.setAttribute('aria-expanded', open);
     });
 
     document.querySelectorAll('.menu a').forEach(link => {
       link.addEventListener('click', () => {
         menu.classList.remove('open');
         menuToggle.textContent = '☰';
+        menuToggle.setAttribute('aria-expanded', 'false');
       });
     });
 
